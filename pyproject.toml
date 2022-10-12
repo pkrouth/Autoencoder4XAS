@@ -1,6 +1,15 @@
-[build-systems]
-requires = [
-	"setuptools>=42",
-	"wheel"
-]
-build-backend = "setuptools.build_meta"
+[tool.poetry]
+name = "encodex"
+version = "0.2.0"
+description = "Update of EncodeX Library"
+authors = ["Prahlad K. Routh, Ph.D. <prahladkumar.routh@stonybrook.edu>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
