@@ -7,7 +7,8 @@ from torch.nn import BatchNorm1d, Dropout
 class Lin3AE(pl.LightningModule):
     def __init__(self, hparams):
         super().__init__()
-        self.hparams = hparams
+        self.save_hyperparameters()
+        self.hparams.update(hparams)
         self.encoder = nn.Sequential(
             nn.Dropout(self.hparams.dropout),
             nn.Linear(10 * 10, self.hparams.hidden_layer_1_dim),
@@ -26,7 +27,7 @@ class Lin3AE(pl.LightningModule):
         )
         self.decoder = nn.Sequential(
             nn.Dropout(self.hparams.dropout),
-            nn.Linear(hparams.latent_size, self.hparams.hidden_layer_3_dim),
+            nn.Linear(self.hparams.latent_size, self.hparams.hidden_layer_3_dim),
             nn.ReLU(True),
             nn.BatchNorm1d(1),
             nn.Dropout(self.hparams.dropout),
@@ -59,25 +60,25 @@ class Lin3AE(pl.LightningModule):
         )
         # self.train_ds, self.val_ds = self.train_ds.float(), self.val_ds.float()
 
-    @pl.data_loader
-    def train_dataloader(self):
-        return DataLoader(
-            self.train_ds,
-            batch_size=self.hparams.batch_size,
-            shuffle=True,
-            num_workers=self.hparams.cpus,
-            drop_last=False,
-        )
+    #@pl.data_loader
+    # def train_dataloader(self):
+    #     return DataLoader(
+    #         self.train_ds,
+    #         batch_size=self.hparams.batch_size,
+    #         shuffle=True,
+    #         num_workers=self.hparams.cpus,
+    #         drop_last=False,
+    #     )
 
-    @pl.data_loader
-    def val_dataloader(self):
-        return DataLoader(
-            self.val_ds,
-            batch_size=self.hparams.batch_size,
-            shuffle=False,
-            num_workers=self.hparams.cpus,
-            drop_last=False,
-        )
+    # #@pl.data_loader
+    # def val_dataloader(self):
+    #     return DataLoader(
+    #         self.val_ds,
+    #         batch_size=self.hparams.batch_size,
+    #         shuffle=False,
+    #         num_workers=self.hparams.cpus,
+    #         drop_last=False,
+    #     )
 
     def configure_optimizers(self):
         return Adam(
@@ -131,28 +132,28 @@ class Lin3AE(pl.LightningModule):
         }
         return {"avg_val_loss": val_avg_loss, "log": tensorboard_logs}
 
-    @staticmethod
-    def add_model_specific_args(parent_parser):
-        """
-        Specify the hyperparams for this LightningModule
-        """
-        # MODEL specific
-        parser = ArgumentParser(parents=[parent_parser])
-        parser.add_argument("--hidden_layer_1_dim", default=128, type=int)
-        parser.add_argument("--hidden_layer_2_dim", default=64, type=int)
-        parser.add_argument("--hidden_layer_3_dim", default=12, type=int)
-        parser.add_argument("--input_dim", default=100, type=int)
+    # @staticmethod
+    # def add_model_specific_args(parent_parser):
+    #     """
+    #     Specify the hyperparams for this LightningModule
+    #     """
+    #     # MODEL specific
+    #     parser = ArgumentParser(parents=[parent_parser])
+    #     parser.add_argument("--hidden_layer_1_dim", default=128, type=int)
+    #     parser.add_argument("--hidden_layer_2_dim", default=64, type=int)
+    #     parser.add_argument("--hidden_layer_3_dim", default=12, type=int)
+    #     parser.add_argument("--input_dim", default=100, type=int)
 
-        ## CONV MODEL
-        parser.add_argument("--fc_layer_1_dim", default=64, type=int)
-        parser.add_argument("--dropout", default=0.5, type=float)
-        ## GENERIC
-        # parser.add_argument('--learning_rate', default=0.001, type=float)
-        # parser.add_argument('--batch_size', default=32, type=int)
-        # parser.add_argument('--max_epochs', default=100, type=int)
-        parser.add_argument("--latent_size", default=3, type=int)
-        # training specific (for this model)
-        return parser
+    #     ## CONV MODEL
+    #     parser.add_argument("--fc_layer_1_dim", default=64, type=int)
+    #     parser.add_argument("--dropout", default=0.5, type=float)
+    #     ## GENERIC
+    #     # parser.add_argument('--learning_rate', default=0.001, type=float)
+    #     # parser.add_argument('--batch_size', default=32, type=int)
+    #     # parser.add_argument('--max_epochs', default=100, type=int)
+    #     parser.add_argument("--latent_size", default=3, type=int)
+    #     # training specific (for this model)
+    #     return parser
 
 
 ## Flatten and UnFlatten Layers
@@ -173,7 +174,8 @@ class UnFlatten(nn.Module):
 class Conv3FC1AE(Lin3AE):
     def __init__(self, hparams):
         super().__init__(hparams)
-        self.hparams = hparams
+        self.save_hyperparameters()
+        self.hparams.update(hparams)
         self.encoder = nn.Sequential(
             nn.Conv1d(
                 in_channels=1, out_channels=8, kernel_size=3, stride=2, padding=1
@@ -225,7 +227,8 @@ class Conv3FC1AE(Lin3AE):
 class Lin2AE1(Lin3AE):
     def __init__(self, hparams):
         super().__init__(hparams)
-        self.hparams = hparams
+        self.save_hyperparameters()
+        self.hparams.update(hparams)
         self.encoder = nn.Sequential(
             # nn.Dropout(self.hparams.dropout),
             nn.Linear(10 * 10, self.hparams.hidden_layer_1_dim),
@@ -269,7 +272,8 @@ class Lin2AE1(Lin3AE):
 class Lin2AE2(Lin3AE):
     def __init__(self, hparams):
         super().__init__(hparams)
-        self.hparams = hparams
+        self.save_hyperparameters()
+        self.hparams.update(hparams)
         self.encoder = nn.Sequential(
             # nn.Dropout(self.hparams.dropout),
             nn.Linear(10 * 10, self.hparams.hidden_layer_1_dim),
@@ -314,7 +318,8 @@ class Lin2AE2(Lin3AE):
 class Lin2AE3(Lin3AE):
     def __init__(self, hparams):
         super().__init__(hparams)
-        self.hparams = hparams
+        self.save_hyperparameters()
+        self.hparams.update(hparams)
         self.encoder = nn.Sequential(
             # nn.Dropout(self.hparams.dropout),
             nn.Linear(10 * 10, self.hparams.hidden_layer_1_dim),
@@ -359,7 +364,8 @@ class Lin2AE3(Lin3AE):
 class Lin2AE4(Lin3AE):
     def __init__(self, hparams):
         super().__init__(hparams)
-        self.hparams = hparams
+        self.save_hyperparameters()
+        self.hparams.update(hparams)
         self.encoder = nn.Sequential(
             # nn.Dropout(self.hparams.dropout),
             nn.Linear(10 * 10, self.hparams.hidden_layer_1_dim),
@@ -402,7 +408,7 @@ class Lin2AE4(Lin3AE):
 
 class Conv2FC(nn.Module):
     def __init__(self, full=False):
-        super(Flatten, self).__init__()
+        super().__init__()
         self.full = full
 
     def forward(self, x):
@@ -412,7 +418,8 @@ class Conv2FC(nn.Module):
 class Conv1FC2AE1(Lin3AE):
     def __init__(self, hparams):
         super().__init__(hparams)
-        self.hparams = hparams
+        self.save_hyperparameters()
+        self.hparams.update(hparams)
         self.encoder = nn.Sequential(
             nn.Conv1d(
                 in_channels=1, out_channels=8, kernel_size=3, stride=2, padding=1
@@ -462,7 +469,8 @@ class Conv1FC2AE1(Lin3AE):
 class Lin2AEBN(Lin3AE):
     def __init__(self, hparams):
         super().__init__(hparams)
-        self.hparams = hparams
+        self.save_hyperparameters()
+        self.hparams.update(hparams)
         self.encoder = nn.Sequential(
             # nn.Dropout(self.hparams.dropout),
             nn.Linear(self.hparams.input_dim, self.hparams.hidden_layer_1_dim),

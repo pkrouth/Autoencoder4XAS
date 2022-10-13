@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "encodex"
+name = "xas_encoder"
 version = "0.2.0"
 description = "Update of EncodeX Library"
 authors = ["Prahlad K. Routh, Ph.D. <prahladkumar.routh@stonybrook.edu>"]

@@ -6,7 +6,8 @@ from ..utils.transforms import *
 class XasLinEncoders(pl.LightningModule):
     def __init__(self, hparams):
         super().__init__()
-        self.hparams = hparams
+        self.save_hyperparameters()
+        self.hparams.update(hparams)
         self.encoder = nn.Sequential(
             nn.Linear(10 * 10, 128),
             nn.ReLU(True),
@@ -14,10 +15,10 @@ class XasLinEncoders(pl.LightningModule):
             nn.ReLU(True),
             nn.Linear(64, 12),
             nn.ReLU(True),
-            nn.Linear(12, hparams.latent_size),
+            nn.Linear(12, self.hparams.latent_size),
         )
         self.decoder = nn.Sequential(
-            nn.Linear(hparams.latent_size, 12),
+            nn.Linear(self.hparams.latent_size, 12),
             nn.ReLU(True),
             nn.Linear(12, 64),
             nn.ReLU(True),
@@ -45,21 +46,21 @@ class XasLinEncoders(pl.LightningModule):
         )
         # self.train_ds, self.val_ds = self.train_ds.float(), self.val_ds.float()
 
-    @pl.data_loader
-    def train_dataloader(self):
-        return DataLoader(
-            self.train_ds,
-            batch_size=self.hparams.batch_size,
-            num_workers=self.hparams.cpus,
-        )
+    # #@pl.data_loader
+    # def train_dataloader(self):
+    #     return DataLoader(
+    #         self.train_ds,
+    #         batch_size=self.hparams.batch_size,
+    #         num_workers=self.hparams.cpus,
+    #     )
 
-    @pl.data_loader
-    def val_dataloader(self):
-        return DataLoader(
-            self.val_ds,
-            batch_size=self.hparams.batch_size,
-            num_workers=self.hparams.cpus,
-        )
+    # #@pl.data_loader
+    # def val_dataloader(self):
+    #     return DataLoader(
+    #         self.val_ds,
+    #         batch_size=self.hparams.batch_size,
+    #         num_workers=self.hparams.cpus,
+    #     )
 
     def configure_optimizers(self):
         return Adam(
@@ -119,11 +120,11 @@ class XasLinEncoders(pl.LightningModule):
         Specify the hyperparams for this LightningModule
         """
         # MODEL specific
-        parser = ArgumentParser(parents=[parent_parser])
+        # parser = ArgumentParser(parents=[parent_parser])
         # parser.add_argument('--learning_rate', default=0.001, type=float)
         # parser.add_argument('--batch_size', default=32, type=int)
         # parser.add_argument('--max_epochs', default=100, type=int)
-        parser.add_argument("--latent_size", default=3, type=int)
+        # parser.add_argument("--latent_size", default=3, type=int)
         # training specific (for this model)
         return parser
 
@@ -146,7 +147,8 @@ class UnFlatten(nn.Module):
 class XasConvAutoEncoder(XasLinEncoders):
     def __init__(self, hparams):
         super().__init__(hparams)
-        self.hparams = hparams
+        self.save_hyperparameters()
+        self.hparams.update(hparams)
         # self.latent_size = latent_size
         self.encoder = nn.Sequential(
             nn.Conv1d(
@@ -202,7 +204,8 @@ class XasConvAutoEncoder(XasLinEncoders):
 class XasConvAutoEncoder2(pl.LightningModule):
     def __init__(self, hparams):
         super().__init__()
-        self.hparams = hparams
+        self.save_hyperparameters()
+        self.hparams.update(hparams)
         # self.latent_size = latent_size
         self.encoder = nn.Sequential(
             nn.Conv1d(
@@ -258,21 +261,21 @@ class XasConvAutoEncoder2(pl.LightningModule):
         )
         # self.train_ds, self.val_ds = self.train_ds.float(), self.val_ds.float()
 
-    @pl.data_loader
-    def train_dataloader(self):
-        return DataLoader(
-            self.train_ds,
-            batch_size=self.hparams.batch_size,
-            num_workers=self.hparams.cpus,
-        )
+    # @pl.data_loader
+    # def train_dataloader(self):
+    #     return DataLoader(
+    #         self.train_ds,
+    #         batch_size=self.hparams.batch_size,
+    #         num_workers=self.hparams.cpus,
+    #     )
 
-    @pl.data_loader
-    def val_dataloader(self):
-        return DataLoader(
-            self.val_ds,
-            batch_size=self.hparams.batch_size,
-            num_workers=self.hparams.cpus,
-        )
+    # @pl.data_loader
+    # def val_dataloader(self):
+    #     return DataLoader(
+    #         self.val_ds,
+    #         batch_size=self.hparams.batch_size,
+    #         num_workers=self.hparams.cpus,
+    #     )
 
     def configure_optimizers(self):
         return torch.optim.Adadelta(self.parameters(), lr=self.hparams.learning_rate)
@@ -340,7 +343,8 @@ class XasConvAutoEncoder2(pl.LightningModule):
 class XasLinAutoEncoder2(pl.LightningModule):
     def __init__(self, hparams):
         super().__init__()
-        self.hparams = hparams
+        self.save_hyperparameters()
+        self.hparams.update(hparams)
         self.encoder = nn.Sequential(
             nn.Linear(10 * 10, 128),
             nn.Tanh(),
@@ -348,10 +352,10 @@ class XasLinAutoEncoder2(pl.LightningModule):
             nn.Tanh(),
             nn.Linear(64, 12),
             nn.Tanh(),
-            nn.Linear(12, hparams.latent_size),
+            nn.Linear(12, self.hparams.latent_size),
         )
         self.decoder = nn.Sequential(
-            nn.Linear(hparams.latent_size, 12),
+            nn.Linear(self.hparams.latent_size, 12),
             nn.Tanh(),
             nn.Linear(12, 64),
             nn.Tanh(),
@@ -378,21 +382,21 @@ class XasLinAutoEncoder2(pl.LightningModule):
         )
         # self.train_ds, self.val_ds = self.train_ds.float(), self.val_ds.float()
 
-    @pl.data_loader
-    def train_dataloader(self):
-        return DataLoader(
-            self.train_ds,
-            batch_size=self.hparams.batch_size,
-            num_workers=self.hparams.cpus,
-        )
+    # @pl.data_loader
+    # def train_dataloader(self):
+    #     return DataLoader(
+    #         self.train_ds,
+    #         batch_size=self.hparams.batch_size,
+    #         num_workers=self.hparams.cpus,
+    #     )
 
-    @pl.data_loader
-    def val_dataloader(self):
-        return DataLoader(
-            self.val_ds,
-            batch_size=self.hparams.batch_size,
-            num_workers=self.hparams.cpus,
-        )
+    # @pl.data_loader
+    # def val_dataloader(self):
+    #     return DataLoader(
+    #         self.val_ds,
+    #         batch_size=self.hparams.batch_size,
+    #         num_workers=self.hparams.cpus,
+    #     )
 
     def configure_optimizers(self):
         return torch.optim.Adadelta(self.parameters(), lr=self.hparams.learning_rate)

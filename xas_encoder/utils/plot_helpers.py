@@ -126,32 +126,32 @@ def vae_test_output(dataloader, model, **kwargs):
     return fig
 
 
-def test_output(dataloader, model, **kwargs):
-    x_one_batch, y_one_batch = next(iter(dataloader))
-    print("One batch shape: ", x_one_batch.shape, y_one_batch.shape)
-    print("Selecting first 4 items only...")
-    y_in = y_one_batch[:4, :]
-    x_in = x_one_batch[:4, :, :]
-    output = model(x_in.cuda().float())
-    print("Output shape: ", output.shape)
+# def test_output(dl, model, **kwargs):
+#     x_one_batch, y_one_batch = next(iter(dl))
+#     print("One batch shape: ", x_one_batch.shape, y_one_batch.shape)
+#     print("Selecting first 4 items only...")
+#     y_in = y_one_batch[:4, :]
+#     x_in = x_one_batch[:4, :, :]
+#     output = model(x_in.cuda().float())
+#     print("Output shape: ", output.shape)
 
-    fig = plt.figure(figsize=(15, 5))
-    x_axis = kwargs.pop("x_axis")
-    savefig_filename = kwargs.pop("savefig")
-    if x_axis is not None:
-        show_spectra_batch((x_in, y_in), energymesh=x_axis, plotlines=True, **kwargs)
-        show_spectra_batch(
-            (output.cpu().detach().numpy(), y_in), energymesh=x_axis, **kwargs
-        )
-    else:
-        show_spectra_batch((x_in, y_in), plotlines=True, **kwargs)
-        show_spectra_batch((output.cpu().detach().numpy(), y_in), **kwargs)
+#     fig = plt.figure(figsize=(15, 5))
+#     x_axis = kwargs.pop("x_axis")
+#     savefig_filename = kwargs.pop("savefig")
+#     if x_axis is not None:
+#         show_spectra_batch((x_in, y_in), energymesh=x_axis, plotlines=True, **kwargs)
+#         show_spectra_batch(
+#             (output.cpu().detach().numpy(), y_in), energymesh=x_axis, **kwargs
+#         )
+#     else:
+#         show_spectra_batch((x_in, y_in), plotlines=True, **kwargs)
+#         show_spectra_batch((output.cpu().detach().numpy(), y_in), **kwargs)
 
-    if savefig_filename:
-        plt.savefig(f"{savefig_filename}.eps", dpi=150)
-    plt.show()
+#     if savefig_filename:
+#         plt.savefig(f"{savefig_filename}.eps", dpi=150)
+#     plt.show()
 
-    return fig
+#     return fig
 
 
 ##export
