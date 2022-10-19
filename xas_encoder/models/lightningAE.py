@@ -132,28 +132,29 @@ class Lin3AE(pl.LightningModule):
         }
         return {"avg_val_loss": val_avg_loss, "log": tensorboard_logs}
 
-    # @staticmethod
-    # def add_model_specific_args(parent_parser):
-    #     """
-    #     Specify the hyperparams for this LightningModule
-    #     """
-    #     # MODEL specific
-    #     parser = ArgumentParser(parents=[parent_parser])
-    #     parser.add_argument("--hidden_layer_1_dim", default=128, type=int)
-    #     parser.add_argument("--hidden_layer_2_dim", default=64, type=int)
-    #     parser.add_argument("--hidden_layer_3_dim", default=12, type=int)
-    #     parser.add_argument("--input_dim", default=100, type=int)
+    @staticmethod
+    def add_model_specific_args(parent_parser):
+        """
+        Specify the hyperparams for this LightningModule
+        """
+        # MODEL specific
+        # parser = ArgumentParser(parents=[parent_parser])
+        parser = parent_parser.add_argument_groups('Lin3AE')
+        parser.add_argument("--hidden_layer_1_dim", default=128, type=int)
+        parser.add_argument("--hidden_layer_2_dim", default=64, type=int)
+        parser.add_argument("--hidden_layer_3_dim", default=12, type=int)
+        parser.add_argument("--input_dim", default=100, type=int)
 
-    #     ## CONV MODEL
-    #     parser.add_argument("--fc_layer_1_dim", default=64, type=int)
-    #     parser.add_argument("--dropout", default=0.5, type=float)
-    #     ## GENERIC
-    #     # parser.add_argument('--learning_rate', default=0.001, type=float)
-    #     # parser.add_argument('--batch_size', default=32, type=int)
-    #     # parser.add_argument('--max_epochs', default=100, type=int)
-    #     parser.add_argument("--latent_size", default=3, type=int)
-    #     # training specific (for this model)
-    #     return parser
+        ## CONV MODEL
+        parser.add_argument("--fc_layer_1_dim", default=64, type=int)
+        parser.add_argument("--dropout", default=0.5, type=float)
+        ## GENERIC
+        # parser.add_argument('--learning_rate', default=0.001, type=float)
+        # parser.add_argument('--batch_size', default=32, type=int)
+        # parser.add_argument('--max_epochs', default=100, type=int)
+        parser.add_argument("--latent_size", default=3, type=int)
+        # training specific (for this model)
+        return parser
 
 
 ## Flatten and UnFlatten Layers

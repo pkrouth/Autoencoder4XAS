@@ -72,9 +72,9 @@ class TestCase(unittest.TestCase):
                     # 'descriptor':'H_fraction'
                     'learning_rate': 0.001,
                     'dropout': 0.5,
-                    'hidden_layer_1_dim': 256,
-                    'hidden_layer_2_dim': 64,
-                    'hidden_layer_3_dim': 32,
+                    # 'hidden_layer_1_dim': 256,
+                    # 'hidden_layer_2_dim': 64,
+                    # 'hidden_layer_3_dim': 32,
                     'input_dim': 100,
                     'latent_size': 10,
                     'fc_layer_1_dim': 256,
