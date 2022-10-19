@@ -138,8 +138,8 @@ class Lin3AE(pl.LightningModule):
         Specify the hyperparams for this LightningModule
         """
         # MODEL specific
-        # parser = ArgumentParser(parents=[parent_parser])
-        parser = parent_parser.add_argument_groups('Lin3AE')
+        parser = ArgumentParser(parents=[parent_parser])
+        # parser = parent_parser.add_argument_groups('Lin3AE')
         parser.add_argument("--hidden_layer_1_dim", default=128, type=int)
         parser.add_argument("--hidden_layer_2_dim", default=64, type=int)
         parser.add_argument("--hidden_layer_3_dim", default=12, type=int)
