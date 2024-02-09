@@ -1,6 +1,6 @@
-# XAS Encoder
+# AutoEncoder for XAS
 
-
+Xray absorption spectroscopy (XAS) is a premier materials characterization technique to study local structure of atomic configuration in nanomateials and bulk. While the extended portion of XAS is more common for quantitative analysis near edge portion (XANES) is underexplored. 
 This is a package for encoding XAS data in neural networks.<break>
 
 ![image](https://github.com/pkrouth/Autoencoder4XAS/assets/20447207/c6cb7cb0-80f5-41d7-83c8-e7ff4860c55d)
