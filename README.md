@@ -12,18 +12,6 @@ For more details on this ML application on XAS, please refer to the following pa
 
 ---
 
-Strucutre of xas_encoder
-
-src
-- models
-   - Models defined separately
-- train
-    - Custom training file
-- utils
-    - Helper functions
-- xasdata
-    - Dataloaders
-    
 
 [//]: <> ( What should be a good and intuitive way to organize it? Like a tutorial? Or like a package? )
 
